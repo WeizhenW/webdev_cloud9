@@ -1,3 +1,5 @@
+<% include partials/headers %>
+
 <h1>Capitals</h1>
 
 <% capitalObj.forEach(function(cap) { %>
@@ -5,3 +7,5 @@
       <%= cap.country %> : <%= cap.capital %>
   </li>
 <% }); %> 
+
+<% include partials/footers %>
