@@ -1,0 +1,17 @@
+<% include partials/headers %>
+<h1>This is the list of cities visited!</h1>
+
+<% citiesVar.forEach(function(city) { %>
+    <li>
+        <%= city %> has been visited!
+    </li>
+<% }) %>
+
+<form action="/addcity" method="POST">
+    <input type="text" name="newCity" placeholder="Type city name">
+    <button> Add city</button>
+</form>
+
+
+
+<% include partials/footers %>
