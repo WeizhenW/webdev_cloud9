@@ -1,17 +1,28 @@
 <% include partials/headers %>
 
-<h1> Here is the list of playgrounds!</h1>
-
-<a href="/playgrounds/new">Add a new playground!</a>
-
-<% playgrounds.forEach(function(playground) { %>
-    <div>
-        <h4><%= playground.name %></h4>
-        <img src = "<%= playground.image %>" alt = "<%= playground.name %>" height = "540" width = "720" >
+<div class="container">
+    <header class="jumbotron">
+        <h1>Welcome to the MinnePlayground website!</h1>
+        <p>View the best indoor playgrounds across the twin cities area</p>
+        <p>
+            <a class="btn btn-primary btn-lg" href="/playgrounds/new" role="button">Add a new playground!</a>
+        </p>
+    </header>
+    
+    <div class="row">
+        <% playgrounds.forEach(function(playground) { %>
+            <div class="col-md-4 col-sm-6">
+                <div class="img-thumbnail">
+                    <img class="img-fluid" src = "<%= playground.image %>" alt = "<%= playground.name %>">
+                    <div class="caption">
+                        <h4><%= playground.name %></h4>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
     </div>
-   
-<% }) %>
 
+</div>
 
 
 <% include partials/footers %>

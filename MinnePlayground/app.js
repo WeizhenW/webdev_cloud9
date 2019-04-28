@@ -24,7 +24,7 @@ app.get("/playgrounds", function(req, res) {
     res.render("playgrounds", {playgrounds: playgrounds});
 })
 
-//POST route
+//POST route to add new one into the playgrounds page
 app.post("/playgrounds", function(req, res) {
     let name = req.body.name;
     let image = req.body.image;
@@ -33,7 +33,7 @@ app.post("/playgrounds", function(req, res) {
     res.redirect("/playgrounds");
 })
 
-//create new playground
+//add new playground page
 app.get("/playgrounds/new", function(req, res) {
     res.render("new");
 })
