@@ -1,1 +1,17 @@
+<% include partials/headers %>
+
 <h1> Here is the list of playgrounds!</h1>
+
+<a href="/playgrounds/new">Add a new playground!</a>
+
+<% playgrounds.forEach(function(playground) { %>
+    <div>
+        <h4><%= playground.name %></h4>
+        <img src = "<%= playground.image %>" alt = "<%= playground.name %>" height = "540" width = "720" >
+    </div>
+   
+<% }) %>
+
+
+
+<% include partials/footers %>
