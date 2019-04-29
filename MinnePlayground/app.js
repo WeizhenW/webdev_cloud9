@@ -11,7 +11,8 @@ app.use(bodyParser.urlencoded({extended: true})); //require body-parser
 //schema setup
 let playgroundSchema = new mongoose.Schema({
     name: String,
-    image: String
+    image: String,
+    description: String
 });
 
 let Playground = mongoose.model("Playground", playgroundSchema);
@@ -20,7 +21,8 @@ let Playground = mongoose.model("Playground", playgroundSchema);
 
 // Playground.create({
 //     name: "Williston Treehouse",
-//     image: "https://eminnetonka.com/images/williston/treehouse/IMG_0084a.jpg"
+//     image: "https://eminnetonka.com/images/williston/treehouse/IMG_0084a.jpg",
+//     description: "The Williston Treehouse is an indoor play area at the Williston Fitness Center for children ages 12 and under. Admission is free for Williston Center members and $6 for non-members."
 // }, function(error, playground) {
 //     if(error) {
 //         console.log(error);
@@ -43,38 +45,53 @@ app.get("/", function(req, res) {
     res.render("landing");
 })
 
-//playgrounds page
+//INDEX ROUTE -display a list of playgrounds
 app.get("/playgrounds", function(req, res) {
     //retrieve playground from the database
     Playground.find({}, function(error, allPlayground) {
         if(error) {
             console.log(error);
         } else {
-            res.render("playgrounds", {playgrounds: allPlayground});
+            res.render("index", {playgrounds: allPlayground});
         }
     })
 })
 
-//POST route to add new one into the playgrounds page
+//CREATE - add new playground to the DB
 app.post("/playgrounds", function(req, res) {
     let name = req.body.name;
     let image = req.body.image;
-    let newPlayground = {name: name, image: image};
+    let desc = req.body.description;
+    let newPlayground = {name: name, image: image, description: desc};
+    
     //create new playground and save to database
     Playground.create(newPlayground, function(error, newlyCreated) {
         if(error) {
             console.log(error);
         } else {
             res.redirect("/playgrounds");
-
         }
     })
 })
 
-//add new playground page
+//NEW ROUTE -display form to add new playground
 app.get("/playgrounds/new", function(req, res) {
     res.render("new");
 })
+
+//SHOW ROUTE - show info about one playground
+app.get("/playgrounds/:id", function(req, res) {
+    
+    Playground.findById(req.params.id, function(error,foundPlayground) {
+        if(error) {
+            console.log(error);
+        } else {
+            res.render("show", {playground: foundPlayground});
+        }
+
+    });
+});
+
 //start server
 app.listen(process.env.PORT, process.env.IP, function() {
     console.log("server started");
