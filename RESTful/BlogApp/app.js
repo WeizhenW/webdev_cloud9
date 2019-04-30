@@ -40,6 +40,25 @@ app.get("/", function(req, res) {
          }
      });
  });
+ 
+ //new route
+ app.get("/blogs/new", function(req, res) {
+     res.render("new");
+ })
+
+//create route
+app.post("/blogs", function(req, res) {
+    Blog.create(req.body.blog, function(error, newBlog) {
+        if(error) {
+            res.render("new");
+        } else {
+            res.redirect("/blogs");
+        }
+    });
+        
+});
+
+
 
 //server start
 app.listen(process.env.PORT, process.env.IP, function() {

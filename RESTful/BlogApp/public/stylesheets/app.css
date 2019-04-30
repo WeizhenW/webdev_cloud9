@@ -1,6 +1,11 @@
 .icon {
-    font-size: 2em;
+    font-size: 3em;
 }
 
-body {
+.container.main {
+    margin-top: 7.0em;
+}
+
+h1 {
+    margin-top: 2em;
 }
