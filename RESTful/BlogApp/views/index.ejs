@@ -2,10 +2,15 @@
 <h1>List of blogs</h1>
 
 <% blogs.forEach(function(blog){ %>
-    <h4><%= blog.title %></h4>
-    <img src="<%= blog.image %>" alt="blog image">
-    <p><%= blog.body %></p>
-    <p><%= blog.created %></p>
+    <h2><%= blog.title %></h4>
+    <div>
+        <img src="<%= blog.image %>" alt="blog image">
+
+    </div>
+    <p><%= blog.body.substring(0,100) %></p>
+    <a href="/blogs/<%=blog._id %>">Read more!</a>
+
+    <p><%= blog.created.toDateString() %></p>
 <% }) %>
 
 <% include partials/footers %>
