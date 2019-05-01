@@ -2,12 +2,17 @@ let express = require("express");
 let app = express();
 let bodyParser = require("body-parser");
 let mongoose = require("mongoose");
+let methodOverride = require("method-override");
+let expressSanitizer = require("express-sanitizer");
 
 //app config
 mongoose.connect("mongodb://localhost:27017/blogapp", {useNewUrlParser: true});//connect to mongoose
+mongoose.set('useFindAndModify', false); //set useFindAndModify to false
 app.set("view engine", "ejs"); //default file type
 app.use(express.static("public")); //style sheets location
 app.use(bodyParser.urlencoded({extended: true})); //use bodyParser
+app.use(expressSanitizer());
+app.use(methodOverride("_method")); //use methodOverride
 
 //Mongoose/Model config
 let blogSchema = new mongoose.Schema({
@@ -48,6 +53,7 @@ app.get("/", function(req, res) {
 
 //create route
 app.post("/blogs", function(req, res) {
+    req.body.blog.body = req.sanitize(req.body.blog.body); //sanitizing: remove any scripts
     Blog.create(req.body.blog, function(error, newBlog) {
         if(error) {
             res.render("new");
@@ -67,10 +73,44 @@ app.get("/blogs/:id", function(req, res) {
             res.render("show", {blog:foundBlog});
         }
     });
-  
-    
 });
 
+//edit route
+app.get("/blogs/:id/edit", function(req, res) {
+    Blog.findById(req.params.id, function(error, foundBlog) {
+        if(error) {
+            res.redirect("/blogs");
+        } else {
+            res.render("edit", {blog: foundBlog});
+
+        }
+    })
+})
+
+//update route
+app.put("/blogs/:id", function(req, res) {
+    req.body.blog.body = req.sanitize(req.body.blog.body);
+    Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(error, updatedBlog) {
+        if(error) {
+            res.redirect("/blogs");
+        } else {
+            res.redirect("/blogs/" + req.params.id);
+        }
+    })
+    
+})
+
+//destroy route
+
+app.delete("/blogs/:id", function(req, res) {
+    Blog.findByIdAndRemove(req.params.id, function(error) {
+        if(error) {
+            res.redirect("/blogs");
+        } else {
+            res.redirect("/blogs");
+        }
+    })
+})
 
 
 //server start
